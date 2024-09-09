@@ -54,11 +54,42 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
+            width: 80px; /* Reduced size by 20% */
+            height: 80px; /* Reduced size by 20% */
             background-color: white;
             border-radius: 50%;
             border: 5px solid #ccc;
+        }
+
+        .roulette-center img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Popup message */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .popup.show {
+            display: block;
+            animation: popupAnimation 0.5s ease-out;
+        }
+
+        @keyframes popupAnimation {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
         }
 
         /* Disclaimer text */
@@ -77,13 +108,13 @@
         <div id="rouletteWheel" class="roulette-wheel"></div>
         <div class="roulette-center">
             <!-- You can add your logo here -->
-            <img src="Assets/RBC CLASSIC LOGO K.png" alt="Logo" style="width: 80px; height: 80px;">
+            <img src="Assets/RBC CLASSIC LOGO K.png" alt="Logo">
         </div>
     </div>
 
     <button id="spinButton" class="spin-btn">Spin</button>
 
-    <p id="resultMessage"></p>
+    <div id="popupMessage" class="popup"></div>
 
     <div class="disclaimer">
         You must be of legal drinking age to play. Prizes may vary and are subject to availability.
@@ -92,7 +123,7 @@
     <script>
         const spinButton = document.getElementById('spinButton');
         const rouletteWheel = document.getElementById('rouletteWheel');
-        const resultMessage = document.getElementById('resultMessage');
+        const popupMessage = document.getElementById('popupMessage');
         let isSpinning = false;
 
         function getRandomDegrees() {
@@ -144,9 +175,15 @@
                     prize = "Major Prize!";
                 }
 
-                // Show result message
-                resultMessage.innerHTML = prize === "Spin Again" ? "Spin Again!" : `Congratulations! You won: ${prize}`;
-
+                // Show popup message for the result
+                popupMessage.innerHTML = prize === "Spin Again" ? "Spin Again!" : `Congratulations! You won: ${prize}`;
+                if (prize !== "Spin Again") {
+                    popupMessage.classList.add('show');
+                    setTimeout(() => {
+                        popupMessage.classList.remove('show');
+                    }, 3000); // Hide the popup after 3 seconds
+                }
+                
                 // Disable the spin button only if the result is NOT "Spin Again"
                 if (prize !== "Spin Again") {
                     spinButton.disabled = true;
