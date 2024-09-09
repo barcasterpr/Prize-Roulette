@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Ruleta de Rincón Beer Company</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +14,13 @@
             background-color: white;
             margin-top: 50px;
         }
-        
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
         .roulette-container {
             position: relative;
             width: 300px;
@@ -40,12 +49,35 @@
             transform: rotate(0deg); /* Ensure clockwise rotation */
         }
 
+        .roulette-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            color: black;
+            text-align: center;
+            line-height: 1.5;
+            font-weight: bold;
+        }
+
+        /* Positioning numbers */
+        .number-1 { top: 10%; left: 50%; transform: translate(-50%, -50%); }
+        .number-2 { top: 30%; left: 50%; transform: translate(-50%, -50%); }
+        .number-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .number-4 { top: 70%; left: 50%; transform: translate(-50%, -50%); }
+        .number-5 { top: 90%; left: 50%; transform: translate(-50%, -50%); }
+        .number-x { font-size: 24px; font-weight: bold; }
+
+        /* Positioning X marks */
+        .x-1 { top: 10%; left: 50%; transform: translate(-50%, 0); }
+        .x-2 { top: 70%; left: 50%; transform: translate(-50%, 0); }
+
         /* Spin button */
         .spin-btn {
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: bold;
         }
 
         /* Placeholder for logo */
@@ -80,6 +112,7 @@
             z-index: 1000;
             font-size: 24px;
             font-weight: bold;
+            font-family: 'Bebas Neue', sans-serif;
         }
 
         .popup.show {
@@ -97,6 +130,7 @@
             margin-top: 20px;
             font-size: 12px;
             color: #555;
+            font-family: 'Bebas Neue', sans-serif;
         }
     </style>
 </head>
@@ -105,7 +139,16 @@
     <h1>Barcaster Prize Roulette</h1>
 
     <div class="roulette-container">
-        <div id="rouletteWheel" class="roulette-wheel"></div>
+        <div id="rouletteWheel" class="roulette-wheel">
+            <!-- Adding numbers and X to the roulette -->
+            <div class="roulette-number number-1">1</div>
+            <div class="roulette-number number-2">2</div>
+            <div class="roulette-number number-3">3</div>
+            <div class="roulette-number number-4">4</div>
+            <div class="roulette-number number-5">5</div>
+            <div class="roulette-number x-1">X</div> <!-- NO PRIZE section -->
+            <div class="roulette-number x-2">X</div> <!-- NO PRIZE section -->
+        </div>
         <div class="roulette-center">
             <!-- You can add your logo here -->
             <img src="Assets/RBC CLASSIC LOGO K.png" alt="Logo">
