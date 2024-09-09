@@ -26,15 +26,15 @@
             border: 10px solid #ccc;
             background: conic-gradient(
                 red 0deg 36deg,               /* No Prize */
-                green 36deg 72deg,            /* Spin Again */
-                blue 72deg 108deg,            /* T-shirt */
-                orange 108deg 144deg,         /* Free Beer */
-                purple 144deg 180deg,         /* Lanyard */
-                yellow 180deg 216deg,         /* Sticker */
-                green 216deg 252deg,          /* Spin Again */
-                red 252deg 288deg,            /* No Prize */
-                lightblue 288deg 324deg,      /* Sticker */
-                gold 324deg 360deg            /* Major Prize */
+                #ffcccc 36deg 72deg,          /* Spin Again */
+                #99ccff 72deg 108deg,         /* T-shirt */
+                #ff9966 108deg 144deg,        /* Free Beer */
+                #cc99ff 144deg 180deg,        /* Lanyard */
+                #ffff99 180deg 216deg,        /* Sticker */
+                #99ff99 216deg 252deg,        /* Spin Again */
+                #ff6666 252deg 288deg,        /* No Prize */
+                #cce5ff 288deg 324deg,        /* Sticker */
+                #ffd700 324deg 360deg         /* Major Prize */
             );
             transition: transform 10s cubic-bezier(0.33, 1, 0.68, 1); /* Smooth stop with 10 seconds spin */
             transform: rotate(0deg); /* Ensure clockwise rotation */
@@ -61,30 +61,6 @@
             border: 5px solid #ccc;
         }
 
-        /* Prize text for each section */
-        .prize-text {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            font-size: 14px;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            line-height: 80px;
-        }
-
-        /* Adjust prize text position to be inside each division */
-        .prize1 { transform: rotate(18deg) translate(100px); }
-        .prize2 { transform: rotate(54deg) translate(100px); }
-        .prize3 { transform: rotate(90deg) translate(100px); }
-        .prize4 { transform: rotate(126deg) translate(100px); }
-        .prize5 { transform: rotate(162deg) translate(100px); }
-        .prize6 { transform: rotate(198deg) translate(100px); }
-        .prize7 { transform: rotate(234deg) translate(100px); }
-        .prize8 { transform: rotate(270deg) translate(100px); }
-        .prize9 { transform: rotate(306deg) translate(100px); }
-        .prize10 { transform: rotate(342deg) translate(100px); }
-
         /* Disclaimer text */
         .disclaimer {
             margin-top: 20px;
@@ -103,18 +79,6 @@
             <!-- You can add your logo here -->
             <img src="Assets/RBC CLASSIC LOGO K.png" alt="Logo" style="width: 80px; height: 80px;">
         </div>
-
-        <!-- Prize text labels -->
-        <div class="prize-text prize1">No Prize</div>
-        <div class="prize-text prize2">Spin Again</div>
-        <div class="prize-text prize3">T-shirt</div>
-        <div class="prize-text prize4">Free Beer</div>
-        <div class="prize-text prize5">Lanyard</div>
-        <div class="prize-text prize6">Sticker</div>
-        <div class="prize-text prize7">Spin Again</div>
-        <div class="prize-text prize8">No Prize</div>
-        <div class="prize-text prize9">Sticker</div>
-        <div class="prize-text prize10">Major Prize</div>
     </div>
 
     <button id="spinButton" class="spin-btn">Spin</button>
