@@ -19,7 +19,6 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 36px;
             margin-bottom: 20px;
-            letter-spacing: 3px; /* Adds space between characters */
         }
 
         .roulette-container {
@@ -59,18 +58,6 @@
             font-weight: bold;
         }
 
-        /* Positioning numbers */
-        .number-1 { top: 10%; left: 50%; transform: translate(-50%, -50%); }
-        .number-2 { top: 30%; left: 50%; transform: translate(-50%, -50%); }
-        .number-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .number-4 { top: 70%; left: 50%; transform: translate(-50%, -50%); }
-        .number-5 { top: 90%; left: 50%; transform: translate(-50%, -50%); }
-        .number-x { font-size: 24px; font-weight: bold; }
-
-        /* Positioning X marks */
-        .x-1 { top: 10%; left: 50%; transform: translate(-50%, 0); }
-        .x-2 { top: 70%; left: 50%; transform: translate(-50%, 0); }
-
         /* Spin button */
         .spin-btn {
             margin-top: 20px;
@@ -87,8 +74,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80px; /* Reduced size by 20% */
-            height: 80px; /* Reduced size by 20% */
+            width: 60px; /* Reduced size by 20% */
+            height: 60px; /* Reduced size by 20% */
             background-color: white;
             border-radius: 50%;
             border: 5px solid #ccc;
@@ -97,6 +84,20 @@
         .roulette-center img {
             width: 100%;
             height: 100%;
+        }
+
+        /* Marker triangle */
+        .marker {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 25px solid red;
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
         }
 
         /* Popup message */
@@ -114,7 +115,6 @@
             font-size: 24px;
             font-weight: bold;
             font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 2px; /* Adds space between characters */
         }
 
         .popup.show {
@@ -140,19 +140,13 @@
 
     <h1>La Ruleta de Rincón Beer Company</h1>
 
+    <!-- Triangle marker -->
+    <div class="marker"></div>
+
     <div class="roulette-container">
         <div id="rouletteWheel" class="roulette-wheel">
-            <!-- Adding numbers and X to the roulette -->
-            <div class="roulette-number number-1">1</div>
-            <div class="roulette-number number-2">2</div>
-            <div class="roulette-number number-3">3</div>
-            <div class="roulette-number number-4">4</div>
-            <div class="roulette-number number-5">5</div>
-            <div class="roulette-number x-1">X</div> <!-- NO PRIZE section -->
-            <div class="roulette-number x-2">X</div> <!-- NO PRIZE section -->
         </div>
         <div class="roulette-center">
-            <!-- You can add your logo here -->
             <img src="Assets/RBC CLASSIC LOGO K.png" alt="Logo">
         </div>
     </div>
