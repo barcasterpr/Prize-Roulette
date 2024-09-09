@@ -96,7 +96,7 @@
             border-right: 15px solid transparent;
             border-top: 25px solid red; /* Changed to point downwards */
             position: absolute;
-            bottom: 100%; /* Adjusted to ensure it touches the wheel */
+            top: -30px; /* Adjusted to ensure it touches the wheel */
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;
@@ -223,14 +223,7 @@
                     prize = "Major Prize!";
                 }
 
-                // Update pointer position
-                const sectorWidth = 360 / prizes.length;
-                const pointerOffset = sectorWidth / 2; // Offset to align pointer
-
-                pointer.style.transform = `translateX(-50%) rotate(${-(finalAngle + pointerOffset)}deg)`;
-                pointer.style.bottom = '100px'; // Adjust this value if needed to make it touch the wheel
-
-                               // Show popup message for the result
+                // Show popup message for the result
                 popupMessage.innerHTML = prize;
                 popupMessage.classList.add('show');
 
@@ -246,8 +239,9 @@
                 }, 5000); // Adjust to control how long the popup is visible
             }, 10000); // Adjust to match the spin duration
         }
-
         spinButton.addEventListener('click', spinRoulette);
+
+        // Additional functions or code can go here if needed
     </script>
 </body>
 </html>
