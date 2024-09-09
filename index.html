@@ -61,12 +61,16 @@
 
         /* Spin button */
         .spin-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
+            margin-top: 40px; /* Adjusted to move it lower */
+            padding: 15px 30px; /* Increased padding to make it bigger */
+            font-size: 20px; /* Bigger text */
             cursor: pointer;
             font-family: 'Bebas Neue', sans-serif;
             font-weight: bold;
+            background-color: #DEAC34; /* Button color */
+            color: #303030; /* Text color inside the button */
+            border: 2px solid white; /* White outline */
+            border-radius: 8px; /* Rounded corners */
         }
 
         /* Placeholder for logo */
@@ -167,8 +171,7 @@
         let isSpinning = false;
 
         function getRandomDegrees() {
-            // Get a random degree between 1440 and 2160 for spinning
-            const minDegree = 1440; // Multiple of 360 for smooth stop
+            const minDegree = 1440;
             const maxDegree = 2160;
             return Math.floor(Math.random() * (maxDegree - minDegree + 1)) + minDegree;
         }
@@ -177,21 +180,15 @@
             if (isSpinning) return;
             isSpinning = true;
 
-            // Get a random spin degree
             const randomSpin = getRandomDegrees();
-
-            // Apply the spin to the wheel
             rouletteWheel.style.transform = `rotate(${randomSpin}deg)`;
 
-            // Disable the button during spin
             spinButton.disabled = true;
 
-            // Determine the result after the spin
             setTimeout(() => {
-                const finalAngle = randomSpin % 360; // Get the final angle after spin
+                const finalAngle = randomSpin % 360;
                 let prize = "";
 
-                // Prize logic based on final angle
                 if (finalAngle >= 0 && finalAngle < 36) {
                     prize = "No Prize";
                 } else if (finalAngle >= 36 && finalAngle < 72) {
@@ -206,7 +203,7 @@
                     prize = "Sticker";
                 } else if (finalAngle >= 216 && finalAngle < 252) {
                     prize = "Spin Again";
-                    spinButton.disabled = false; // Re-enable if spin again
+                    spinButton.disabled = false;
                 } else if (finalAngle >= 252 && finalAngle < 288) {
                     prize = "No Prize";
                 } else if (finalAngle >= 288 && finalAngle < 324) {
@@ -215,24 +212,21 @@
                     prize = "Major Prize!";
                 }
 
-                // Show popup message for the result
                 popupMessage.innerHTML = prize === "Spin Again" ? "Spin Again!" : `Congratulations! You won: ${prize}`;
                 if (prize !== "Spin Again") {
                     popupMessage.classList.add('show');
                     setTimeout(() => {
                         popupMessage.classList.remove('show');
-                    }, 3000); // Hide the popup after 3 seconds
+                    }, 3000);
                 }
-                
-                // Disable the spin button only if the result is NOT "Spin Again"
+
                 if (prize !== "Spin Again") {
                     spinButton.disabled = true;
                 }
                 isSpinning = false;
-            }, 10000); // Wait for 10 seconds (duration of the spin)
+            }, 10000);
         }
 
-        // Event listener for spin button
         spinButton.addEventListener('click', spinRoulette);
     </script>
 
