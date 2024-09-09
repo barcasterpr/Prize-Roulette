@@ -15,6 +15,7 @@
             margin-top: 50px;
         }
 
+        /* Replace title with image */
         .logo-image {
             margin-bottom: 20px;
             max-width: 90%; /* Responsive size */
@@ -24,6 +25,7 @@
             margin-right: auto;
         }
 
+        /* Responsive design for logo on mobile */
         @media (max-width: 768px) {
             .logo-image {
                 max-width: 80%; /* Smaller on mobile */
@@ -67,6 +69,7 @@
             font-weight: bold;
         }
 
+        /* Spin button */
         .spin-btn {
             margin-top: 40px; /* Adjusted to move it lower */
             padding: 15px 30px; /* Increased size */
@@ -80,6 +83,7 @@
             border-radius: 8px;
         }
 
+        /* Placeholder for logo */
         .roulette-center {
             display: none; /* Hide logo inside roulette */
         }
@@ -92,12 +96,13 @@
             border-right: 15px solid transparent;
             border-top: 25px solid red; /* Changed to point downwards */
             position: absolute;
-            top: -35px; /* Positioned above the wheel */
+            bottom: 100%; /* Adjusted to ensure it touches the wheel */
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;
         }
 
+        /* Popup message */
         .popup {
             display: none;
             position: fixed;
@@ -124,6 +129,7 @@
             to { opacity: 1; transform: translate(-50%, -50%); }
         }
 
+        /* Disclaimer text */
         .disclaimer {
             margin-top: 20px;
             font-size: 12px;
@@ -134,6 +140,7 @@
 </head>
 <body>
 
+    <!-- Image logo instead of title -->
     <img src="Assets/Ruleta de RBC Logo.png" alt="Ruleta Logo" class="logo-image">
 
     <div class="roulette-container">
@@ -143,7 +150,7 @@
             <!-- Removed the image inside the roulette -->
         </div>
         <!-- Marker triangle -->
-        <div class="marker"></div>
+        <div id="pointer" class="marker"></div>
     </div>
 
     <button id="spinButton" class="spin-btn">Spin</button>
@@ -158,10 +165,19 @@
         const spinButton = document.getElementById('spinButton');
         const rouletteWheel = document.getElementById('rouletteWheel');
         const popupMessage = document.getElementById('popupMessage');
+        const pointer = document.getElementById('pointer');
         let isSpinning = false;
 
+        // Prize sectors
+        const prizes = [
+            "No Prize", "Spin Again", "T-shirt", "Free Beer", 
+            "Lanyard", "Sticker", "Spin Again", "No Prize", 
+            "Sticker", "Major Prize!"
+        ];
+
         function getRandomDegrees() {
-            const minDegree = 1440;
+            // Get a random degree between 1440 and 2160 for spinning
+            const minDegree = 1440; // Multiple of 360 for smooth stop
             const maxDegree = 2160;
             return Math.floor(Math.random() * (maxDegree - minDegree + 1)) + minDegree;
         }
@@ -170,14 +186,21 @@
             if (isSpinning) return;
             isSpinning = true;
 
+            // Get a random spin degree
             const randomSpin = getRandomDegrees();
+
+            // Apply the spin to the wheel
             rouletteWheel.style.transform = `rotate(${randomSpin}deg)`;
+
+            // Disable the button during spin
             spinButton.disabled = true;
 
+            // Determine the result after the spin
             setTimeout(() => {
-                const finalAngle = randomSpin % 360;
+                const finalAngle = randomSpin % 360; // Get the final angle after spin
                 let prize = "";
 
+                // Prize logic based on final angle
                 if (finalAngle >= 0 && finalAngle < 36) {
                     prize = "No Prize";
                 } else if (finalAngle >= 36 && finalAngle < 72) {
@@ -192,7 +215,6 @@
                     prize = "Sticker";
                 } else if (finalAngle >= 216 && finalAngle < 252) {
                     prize = "Spin Again";
-                    spinButton.disabled = false;
                 } else if (finalAngle >= 252 && finalAngle < 288) {
                     prize = "No Prize";
                 } else if (finalAngle >= 288 && finalAngle < 324) {
@@ -201,23 +223,31 @@
                     prize = "Major Prize!";
                 }
 
-                popupMessage.innerHTML = prize === "Spin Again" ? "Spin Again!" : `Congratulations! You won: ${prize}`;
-                if (prize !== "Spin Again") {
-                    popupMessage.classList.add('show');
-                    setTimeout(() => {
-                        popupMessage.classList.remove('show');
-                    }, 3000);
-                }
-                
-                if (prize !== "Spin Again") {
-                    spinButton.disabled = true;
-                }
-                isSpinning = false;
-            }, 10000);
+                // Update pointer position
+                const sectorWidth = 360 / prizes.length;
+                const pointerOffset = sectorWidth / 2; // Offset to align pointer
+
+                pointer.style.transform = `translateX(-50%) rotate(${-(finalAngle + pointerOffset)}deg)`;
+                pointer.style.bottom = '100px'; // Adjust this value if needed to make it touch the wheel
+
+                               // Show popup message for the result
+                popupMessage.innerHTML = prize;
+                popupMessage.classList.add('show');
+
+                // Re-enable the spin button after a short delay
+                setTimeout(() => {
+                    spinButton.disabled = false;
+                    isSpinning = false;
+                }, 2000); // Adjust the delay to match your desired popup display duration
+
+                // Hide the popup message after a certain time
+                setTimeout(() => {
+                    popupMessage.classList.remove('show');
+                }, 5000); // Adjust to control how long the popup is visible
+            }, 10000); // Adjust to match the spin duration
         }
 
         spinButton.addEventListener('click', spinRoulette);
     </script>
-
 </body>
 </html>
