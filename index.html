@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcaster Prize Roulette</title>
+    <style>
+        body {
+            background-color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #roulette {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 20px auto;
+        }
+        #spinBtn {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #spinBtn:disabled {
+            background-color: grey;
+            cursor: not-allowed;
+        }
+        #logo {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .disclaimer {
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Barcaster Prize Roulette</h1>
+    <div id="roulette">
+        <canvas id="wheel" width="500" height="500"></canvas>
+        <div id="logo" style="background-image: url('path/to/your/logo.png');"></div>
+    </div>
+    <button id="spinBtn" onclick="spin()">Spin</button>
+    <div id="message"></div>
+    <div class="disclaimer">
+        Must be of legal drinking age to play. Prizes are subject to availability and not guaranteed.
+    </div>
+
+    <script>
+        const prizes = [
+            'Sticker', 'Free Beer', 'Tshirt', 'No Prize', 'Lanyard', 
+            'Sticker', 'No Prize', 'Spin Again', 'Spin Again', 'Major Prize'
+        ];
+
+        const colors = [
+            '#FF5733', '#33FF57', '#3357FF', '#F0FF33', '#33F0FF',
+            '#FF33A1', '#FFA133', '#33FF99', '#FF3333', '#FF33FF'
+        ];
+
+        const specialPrizeIndex = 9;  // Smaller special prize index
+        const freeSpinIndices = [7, 8];  // Indices for free spins
+
+        const canvas = document.getElementById('wheel');
+        const ctx = canvas.getContext('2d');
+        let angle = 0;
+        let spinTimeout;
+        let isSpinning = false;
+
+        function drawWheel() {
+            const totalSlices = prizes.length;
+            const sliceAngle = (2 * Math.PI) / totalSlices;
+
+            for (let i = 0; i < totalSlices; i++) {
+                const startAngle = angle + i * sliceAngle;
+                const endAngle = startAngle + sliceAngle;
+                ctx.beginPath();
+                ctx.moveTo(250, 250);
+                ctx.arc(250, 250, 250, startAngle, endAngle);
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                ctx.stroke();
+
+                // Adjust for special prize size
+                if (i === specialPrizeIndex) {
+                    ctx.save();
+                    ctx.translate(250, 250);
+                    ctx.rotate(startAngle + sliceAngle / 2);
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = 'bold 20px Arial';
+                    ctx.fillText(prizes[i], 200, 10);
+                    ctx.restore();
+                } else {
+                    ctx.save();
+                    ctx.translate(250, 250);
+                    ctx.rotate(startAngle + sliceAngle / 2);
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.fillText(prizes[i], 160, 10);
+                    ctx.restore();
+                }
+            }
+        }
+
+        function spin() {
+            if (isSpinning) return;
+
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.disabled = true;
+
+            isSpinning = true;
+            const spinTime = Math.random() * 10 + 5;  // Spin time between 5 to 15 seconds
+            let spinAngle = Math.random() * 360; // Random starting angle
+
+            function animateSpin() {
+                angle += 0.01 * spinAngle;
+                angle %= (2 * Math.PI);
+                drawWheel();
+
+                spinTime -= 0.1;
+                if (spinTime > 0) {
+                    spinTimeout = setTimeout(animateSpin, 50);
+                } else {
+                    stopSpin();
+                }
+            }
+
+            animateSpin();
+        }
+
+        function stopSpin() {
+            clearTimeout(spinTimeout);
+            isSpinning = false;
+
+            const prizeIndex = Math.floor(Math.random() * prizes.length);
+            const prize = prizes[prizeIndex];
+            const message = document.getElementById('message');
+
+            if (freeSpinIndices.includes(prizeIndex)) {
+                message.innerHTML = 'Congratulations! You got a free spin!';
+                document.getElementById('spinBtn').disabled = false;
+            } else {
+                message.innerHTML = prize === 'No Prize' ? 'Sorry, no prize.' : `Congratulations! You won: ${prize}`;
+            }
+        }
+
+        drawWheel();
+    </script>
+</body>
+</html>
