@@ -15,7 +15,6 @@
             margin-top: 50px;
         }
 
-        /* Replace title with image */
         .logo-image {
             margin-bottom: 20px;
             max-width: 90%; /* Responsive size */
@@ -25,7 +24,6 @@
             margin-right: auto;
         }
 
-        /* Responsive design for logo on mobile */
         @media (max-width: 768px) {
             .logo-image {
                 max-width: 80%; /* Smaller on mobile */
@@ -69,7 +67,6 @@
             font-weight: bold;
         }
 
-        /* Spin button */
         .spin-btn {
             margin-top: 40px; /* Adjusted to move it lower */
             padding: 15px 30px; /* Increased size */
@@ -83,7 +80,6 @@
             border-radius: 8px;
         }
 
-        /* Placeholder for logo */
         .roulette-center {
             display: none; /* Hide logo inside roulette */
         }
@@ -96,13 +92,12 @@
             border-right: 15px solid transparent;
             border-top: 25px solid red; /* Changed to point downwards */
             position: absolute;
-            bottom: -35px; /* Adjusted to ensure it points correctly */
+            top: -35px; /* Positioned above the wheel */
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;
         }
 
-        /* Popup message */
         .popup {
             display: none;
             position: fixed;
@@ -129,7 +124,6 @@
             to { opacity: 1; transform: translate(-50%, -50%); }
         }
 
-        /* Disclaimer text */
         .disclaimer {
             margin-top: 20px;
             font-size: 12px;
@@ -140,7 +134,6 @@
 </head>
 <body>
 
-    <!-- Image logo instead of title -->
     <img src="Assets/Ruleta de RBC Logo.png" alt="Ruleta Logo" class="logo-image">
 
     <div class="roulette-container">
@@ -168,8 +161,7 @@
         let isSpinning = false;
 
         function getRandomDegrees() {
-            // Get a random degree between 1440 and 2160 for spinning
-            const minDegree = 1440; // Multiple of 360 for smooth stop
+            const minDegree = 1440;
             const maxDegree = 2160;
             return Math.floor(Math.random() * (maxDegree - minDegree + 1)) + minDegree;
         }
@@ -178,21 +170,14 @@
             if (isSpinning) return;
             isSpinning = true;
 
-            // Get a random spin degree
             const randomSpin = getRandomDegrees();
-
-            // Apply the spin to the wheel
             rouletteWheel.style.transform = `rotate(${randomSpin}deg)`;
-
-            // Disable the button during spin
             spinButton.disabled = true;
 
-            // Determine the result after the spin
             setTimeout(() => {
-                const finalAngle = randomSpin % 360; // Get the final angle after spin
+                const finalAngle = randomSpin % 360;
                 let prize = "";
 
-                // Prize logic based on final angle
                 if (finalAngle >= 0 && finalAngle < 36) {
                     prize = "No Prize";
                 } else if (finalAngle >= 36 && finalAngle < 72) {
@@ -207,7 +192,7 @@
                     prize = "Sticker";
                 } else if (finalAngle >= 216 && finalAngle < 252) {
                     prize = "Spin Again";
-                    spinButton.disabled = false; // Re-enable if spin again
+                    spinButton.disabled = false;
                 } else if (finalAngle >= 252 && finalAngle < 288) {
                     prize = "No Prize";
                 } else if (finalAngle >= 288 && finalAngle < 324) {
@@ -216,24 +201,21 @@
                     prize = "Major Prize!";
                 }
 
-                // Show popup message for the result
                 popupMessage.innerHTML = prize === "Spin Again" ? "Spin Again!" : `Congratulations! You won: ${prize}`;
                 if (prize !== "Spin Again") {
                     popupMessage.classList.add('show');
                     setTimeout(() => {
                         popupMessage.classList.remove('show');
-                    }, 3000); // Hide the popup after 3 seconds
+                    }, 3000);
                 }
                 
-                // Disable the spin button only if the result is NOT "Spin Again"
                 if (prize !== "Spin Again") {
                     spinButton.disabled = true;
                 }
                 isSpinning = false;
-            }, 10000); // Wait for 10 seconds (duration of the spin)
+            }, 10000);
         }
 
-        // Event listener for spin button
         spinButton.addEventListener('click', spinRoulette);
     </script>
 
