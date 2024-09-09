@@ -6,162 +6,194 @@
     <title>Barcaster Prize Roulette</title>
     <style>
         body {
-            background-color: white;
-            text-align: center;
             font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: white;
+            margin-top: 50px;
         }
-        #roulette {
+        
+        .roulette-container {
             position: relative;
-            width: 500px;
-            height: 500px;
-            margin: 20px auto;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
         }
-        #spinBtn {
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
+
+        .roulette-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 10px solid #ccc;
+            background: conic-gradient(
+                red 0deg 36deg,               /* No Prize */
+                green 36deg 72deg,            /* Spin Again */
+                blue 72deg 108deg,            /* T-shirt */
+                orange 108deg 144deg,         /* Free Beer */
+                purple 144deg 180deg,         /* Lanyard */
+                yellow 180deg 216deg,         /* Sticker */
+                green 216deg 252deg,          /* Spin Again */
+                red 252deg 288deg,            /* No Prize */
+                lightblue 288deg 324deg,      /* Sticker */
+                gold 324deg 360deg            /* Major Prize */
+            );
+            transition: transform 10s cubic-bezier(0.33, 1, 0.68, 1); /* Smooth stop with 10 seconds spin */
+            transform: rotate(0deg); /* Ensure clockwise rotation */
+        }
+
+        /* Spin button */
+        .spin-btn {
             margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
-        #spinBtn:disabled {
-            background-color: grey;
-            cursor: not-allowed;
-        }
-        #logo {
+
+        /* Placeholder for logo */
+        .roulette-center {
             position: absolute;
-            width: 100px;
-            height: 100px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background-color: white;
             border-radius: 50%;
-            background-size: contain;
-            background-repeat: no-repeat;
+            border: 5px solid #ccc;
         }
-        #message {
-            margin-top: 20px;
-            font-size: 24px;
-            color: #333;
+
+        /* Prize text for each section */
+        .prize-text {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 80px;
         }
+
+        /* Adjust prize text position to be inside each division */
+        .prize1 { transform: rotate(18deg) translate(100px); }
+        .prize2 { transform: rotate(54deg) translate(100px); }
+        .prize3 { transform: rotate(90deg) translate(100px); }
+        .prize4 { transform: rotate(126deg) translate(100px); }
+        .prize5 { transform: rotate(162deg) translate(100px); }
+        .prize6 { transform: rotate(198deg) translate(100px); }
+        .prize7 { transform: rotate(234deg) translate(100px); }
+        .prize8 { transform: rotate(270deg) translate(100px); }
+        .prize9 { transform: rotate(306deg) translate(100px); }
+        .prize10 { transform: rotate(342deg) translate(100px); }
+
+        /* Disclaimer text */
         .disclaimer {
+            margin-top: 20px;
             font-size: 12px;
-            color: #999;
-            margin-top: 10px;
+            color: #555;
         }
     </style>
 </head>
 <body>
+
     <h1>Barcaster Prize Roulette</h1>
-    <div id="roulette">
-        <canvas id="wheel" width="500" height="500"></canvas>
-        <div id="logo" style="background-image: url('Assets/RBC CLASSIC LOGO K.png');"></div>
+
+    <div class="roulette-container">
+        <div id="rouletteWheel" class="roulette-wheel"></div>
+        <div class="roulette-center">
+            <!-- You can add your logo here -->
+            <img src="path_to_your_logo.png" alt="Logo" style="width: 80px; height: 80px;">
+        </div>
+
+        <!-- Prize text labels -->
+        <div class="prize-text prize1">No Prize</div>
+        <div class="prize-text prize2">Spin Again</div>
+        <div class="prize-text prize3">T-shirt</div>
+        <div class="prize-text prize4">Free Beer</div>
+        <div class="prize-text prize5">Lanyard</div>
+        <div class="prize-text prize6">Sticker</div>
+        <div class="prize-text prize7">Spin Again</div>
+        <div class="prize-text prize8">No Prize</div>
+        <div class="prize-text prize9">Sticker</div>
+        <div class="prize-text prize10">Major Prize</div>
     </div>
-    <button id="spinBtn" onclick="spin()">Spin</button>
-    <div id="message"></div>
+
+    <button id="spinButton" class="spin-btn">Spin</button>
+
+    <p id="resultMessage"></p>
+
     <div class="disclaimer">
-        Must be of legal drinking age to play. Prizes are subject to availability and not guaranteed.
+        You must be of legal drinking age to play. Prizes may vary and are subject to availability.
     </div>
 
     <script>
-        const prizes = [
-            'Sticker', 'Free Beer', 'Tshirt', 'No Prize', 'Lanyard', 
-            'Sticker', 'No Prize', 'Spin Again', 'Spin Again', 'Major Prize'
-        ];
-
-        const colors = [
-            '#FF5733', '#33FF57', '#3357FF', '#F0FF33', '#33F0FF',
-            '#FF33A1', '#FFA133', '#33FF99', '#FF3333', '#FF33FF'
-        ];
-
-        const specialPrizeIndex = 9;  // Smaller special prize index
-        const freeSpinIndices = [7, 8];  // Indices for free spins
-
-        const canvas = document.getElementById('wheel');
-        const ctx = canvas.getContext('2d');
-        let angle = 0;
-        let spinTimeout;
+        const spinButton = document.getElementById('spinButton');
+        const rouletteWheel = document.getElementById('rouletteWheel');
+        const resultMessage = document.getElementById('resultMessage');
         let isSpinning = false;
 
-        function drawWheel() {
-            const totalSlices = prizes.length;
-            const sliceAngle = (2 * Math.PI) / totalSlices;
-
-            for (let i = 0; i < totalSlices; i++) {
-                const startAngle = angle + i * sliceAngle;
-                const endAngle = startAngle + sliceAngle;
-                ctx.beginPath();
-                ctx.moveTo(250, 250);
-                ctx.arc(250, 250, 250, startAngle, endAngle);
-                ctx.fillStyle = colors[i];
-                ctx.fill();
-                ctx.stroke();
-
-                // Adjust for special prize size
-                if (i === specialPrizeIndex) {
-                    ctx.save();
-                    ctx.translate(250, 250);
-                    ctx.rotate(startAngle + sliceAngle / 2);
-                    ctx.fillStyle = '#FFFFFF';
-                    ctx.font = 'bold 20px Arial';
-                    ctx.fillText(prizes[i], 200, 10);
-                    ctx.restore();
-                } else {
-                    ctx.save();
-                    ctx.translate(250, 250);
-                    ctx.rotate(startAngle + sliceAngle / 2);
-                    ctx.fillStyle = '#FFFFFF';
-                    ctx.font = 'bold 16px Arial';
-                    ctx.fillText(prizes[i], 160, 10);
-                    ctx.restore();
-                }
-            }
+        function getRandomDegrees() {
+            // Get a random degree between 1440 and 2160 for spinning
+            const minDegree = 1440; // Multiple of 360 for smooth stop
+            const maxDegree = 2160;
+            return Math.floor(Math.random() * (maxDegree - minDegree + 1)) + minDegree;
         }
 
-        function spin() {
+        function spinRoulette() {
             if (isSpinning) return;
-
-            const spinBtn = document.getElementById('spinBtn');
-            spinBtn.disabled = true;
-
             isSpinning = true;
-            const spinTime = Math.random() * 10 + 5;  // Spin time between 5 to 15 seconds
-            let spinAngle = Math.random() * 360; // Random starting angle
 
-            function animateSpin() {
-                angle += 0.01 * spinAngle;
-                angle %= (2 * Math.PI);
-                drawWheel();
+            // Get a random spin degree
+            const randomSpin = getRandomDegrees();
 
-                spinTime -= 0.1;
-                if (spinTime > 0) {
-                    spinTimeout = setTimeout(animateSpin, 50);
+            // Apply the spin to the wheel
+            rouletteWheel.style.transform = `rotate(${randomSpin}deg)`;
+
+            // Disable the button during spin
+            spinButton.disabled = true;
+
+            // Determine the result after the spin
+            setTimeout(() => {
+                const finalAngle = randomSpin % 360; // Get the final angle after spin
+                let prize = "";
+
+                // Prize logic based on final angle
+                if (finalAngle >= 0 && finalAngle < 36) {
+                    prize = "No Prize";
+                } else if (finalAngle >= 36 && finalAngle < 72) {
+                    prize = "Spin Again";
+                } else if (finalAngle >= 72 && finalAngle < 108) {
+                    prize = "T-shirt";
+                } else if (finalAngle >= 108 && finalAngle < 144) {
+                    prize = "Free Beer";
+                } else if (finalAngle >= 144 && finalAngle < 180) {
+                    prize = "Lanyard";
+                } else if (finalAngle >= 180 && finalAngle < 216) {
+                    prize = "Sticker";
+                } else if (finalAngle >= 216 && finalAngle < 252) {
+                    prize = "Spin Again";
+                    spinButton.disabled = false; // Re-enable if spin again
+                } else if (finalAngle >= 252 && finalAngle < 288) {
+                    prize = "No Prize";
+                } else if (finalAngle >= 288 && finalAngle < 324) {
+                    prize = "Sticker";
                 } else {
-                    stopSpin();
+                    prize = "Major Prize!";
                 }
-            }
 
-            animateSpin();
+                // Show result message
+                resultMessage.innerHTML = prize === "Spin Again" ? "Spin Again!" : `Congratulations! You won: ${prize}`;
+
+                // Disable the spin button only if the result is NOT "Spin Again"
+                if (prize !== "Spin Again") {
+                    spinButton.disabled = true;
+                }
+                isSpinning = false;
+            }, 10000); // Wait for 10 seconds (duration of the spin)
         }
 
-        function stopSpin() {
-            clearTimeout(spinTimeout);
-            isSpinning = false;
-
-            const prizeIndex = Math.floor(Math.random() * prizes.length);
-            const prize = prizes[prizeIndex];
-            const message = document.getElementById('message');
-
-            if (freeSpinIndices.includes(prizeIndex)) {
-                message.innerHTML = 'Congratulations! You got a free spin!';
-                document.getElementById('spinBtn').disabled = false;
-            } else {
-                message.innerHTML = prize === 'No Prize' ? 'Sorry, no prize.' : `Congratulations! You won: ${prize}`;
-            }
-        }
-
-        drawWheel();
+        // Event listener for spin button
+        spinButton.addEventListener('click', spinRoulette);
     </script>
+
 </body>
 </html>
