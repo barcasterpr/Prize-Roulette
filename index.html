@@ -18,6 +18,18 @@
         /* Replace title with image */
         .logo-image {
             margin-bottom: 20px;
+            max-width: 90%; /* Responsive size */
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Responsive design for logo on mobile */
+        @media (max-width: 768px) {
+            .logo-image {
+                max-width: 80%; /* Smaller on mobile */
+            }
         }
 
         .roulette-container {
@@ -76,15 +88,15 @@
             display: none; /* Hide logo inside roulette */
         }
 
-        /* Marker triangle */
+        /* Marker triangle pointing down */
         .marker {
             width: 0;
             height: 0;
             border-left: 15px solid transparent;
             border-right: 15px solid transparent;
-            border-bottom: 25px solid red;
+            border-top: 25px solid red; /* Changed to point downwards */
             position: absolute;
-            top: -35px; /* Adjust to ensure it points correctly */
+            bottom: -35px; /* Adjusted to ensure it points correctly */
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;
